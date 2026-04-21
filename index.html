@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Петро Чорноморець</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: #f6f5f3;
+      color: #1a1a1a;
+      min-height: 100vh;
+    }
+
+    .page {
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 3rem;
+    }
+
+    .hero {
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 0.5px solid rgba(0,0,0,0.12);
+    }
+    .hero h1 {
+      font-size: 24px;
+      font-weight: 500;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+    }
+    .hero p {
+      font-size: 14px;
+      color: #777;
+    }
+
+    .section { margin-bottom: 1.75rem; }
+    .section-label {
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #aaa;
+      margin-bottom: 10px;
+    }
+
+    .btn-row { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      border-radius: 8px;
+      text-decoration: none;
+      border: 0.5px solid rgba(0,0,0,0.15);
+      background: #fff;
+      color: #1a1a1a;
+      transition: background 0.15s, border-color 0.15s;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: #f6f5f3;
+      border-color: rgba(0,0,0,0.25);
+    }
+
+    .btn-accent {
+      background: #FAEEDA;
+      border-color: #FAC775;
+      color: #633806;
+    }
+    .btn-accent:hover {
+      background: #FAC775;
+      border-color: #EF9F27;
+    }
+
+    .divider {
+      height: 0.5px;
+      background: rgba(0,0,0,0.1);
+      margin: 1.75rem 0;
+    }
+
+    .projects { display: flex; flex-direction: column; gap: 8px; }
+    .project-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 0.5px solid rgba(0,0,0,0.1);
+      background: #fff;
+    }
+    .project-name {
+      font-size: 13px;
+      font-weight: 500;
+      color: #1a1a1a;
+    }
+    .project-role {
+      font-size: 12px;
+      color: #888;
+      margin-top: 1px;
+    }
+    .project-link {
+      font-size: 12px;
+      font-weight: 500;
+      color: #666;
+      text-decoration: none;
+      border: 0.5px solid rgba(0,0,0,0.12);
+      border-radius: 8px;
+      padding: 4px 10px;
+      background: #f6f5f3;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .project-link:hover {
+      color: #1a1a1a;
+      border-color: rgba(0,0,0,0.22);
+    }
+
+    .socials {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .social-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 12px;
+      border-radius: 8px;
+      border: 0.5px solid rgba(0,0,0,0.1);
+      background: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      color: #1a1a1a;
+      transition: background 0.15s;
+    }
+    .social-link:hover { background: #f6f5f3; }
+    .social-link svg {
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
+      opacity: 0.5;
+    }
+
+    @media (max-width: 480px) {
+      .page { padding: 1.5rem 1rem 2rem; }
+      .socials { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="hero">
+    <h1>Петро Чорноморець</h1>
+    <p>Кандидат біологічних наук</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Актуальний збір</div>
+    <div class="btn-row">
+      <a class="btn btn-accent" href="https://send.monobank.ua/jar/52tDzeCLKA" target="_blank">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+        </svg>
+        На кран-маніпулятор
+      </a>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section">
+    <div class="section-label">Курси</div>
+    <div class="btn-row">
+      <a class="btn" href="#">Біологія психіки</a>
+      <a class="btn" href="#">Біологія для СЕО та власників</a>
+      <a class="btn" href="#">Курси Петра Чорноморця і друзів</a>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section">
+    <div class="section-label">Де я що натворив</div>
+    <div class="projects">
+
+      <div class="project-row">
+        <div>
+          <div class="project-name">Змінотворці</div>
+          <div class="project-role">Співзасновник</div>
+        </div>
+        <a class="project-link" href="https://zminotvortsi.org/" target="_blank">Перейти →</a>
+      </div>
+
+      <div class="project-row">
+        <div>
+          <div class="project-name">Демократична школа Майбутні</div>
+          <div class="project-role">В минулому співавтор</div>
+        </div>
+        <a class="project-link" href="https://www.maibutni.com.ua/" target="_blank">Перейти →</a>
+      </div>
+
+      <div class="project-row">
+        <div>
+          <div class="project-name">kmbs</div>
+          <div class="project-role">Викладач</div>
+        </div>
+        <a class="project-link" href="https://kmbs.ua/" target="_blank">Перейти →</a>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section">
+    <div class="section-label">Соцмережі</div>
+    <div class="socials">
+
+      <a class="social-link" href="https://t.me/petro_chornomorets" target="_blank">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M9.9 16.2 9.7 20c.4 0 .6-.2.8-.4l2-1.9 4.1 3c.8.4 1.3.2 1.5-.7l2.7-12.7c.3-1.1-.4-1.6-1.2-1.3L2.2 10.1c-1 .4-1 1 0 1.3l4.4 1.4L17.4 6.6c.5-.3 1-.1.6.2"/>
+        </svg>
+        Telegram
+      </a>
+
+      <a class="social-link" href="https://www.facebook.com/petro.chornomorets" target="_blank">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M13 3h4v4h-4v3h4v4h-4v7h-4v-7H7v-4h2V7a4 4 0 0 1 4-4"/>
+        </svg>
+        Facebook
+      </a>
+
+      <a class="social-link" href="https://www.instagram.com/pyyythooonnn/" target="_blank">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5m5 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10m6.5-.9a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4"/>
+        </svg>
+        Instagram
+      </a>
+
+      <a class="social-link" href="https://www.tiktok.com/@uchitelgoda" target="_blank">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M14 3c.5 2.5 2.5 4.5 5 5v3c-1.6 0-3-.5-4-1.4V17a5 5 0 1 1-5-5c.4 0 .7 0 1 .1v3a2 2 0 1 0 2 2V3h1z"/>
+        </svg>
+        TikTok
+      </a>
+
+      <a class="social-link" href="https://www.youtube.com/@PetroChornomoretsOnline" target="_blank">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M23 12s0-4-1-6c-.5-1-1.5-1.5-2.5-1.7C17.5 4 12 4 12 4s-5.5 0-7.5.3c-1 .2-2 .7-2.5 1.7C1 8 1 12 1 12s0 4 1 6c.5 1 1.5 1.5 2.5 1.7C6.5 20 12 20 12 20s5.5 0 7.5-.3c1-.2 2-.7 2.5-1.7 1-2 1-6 1-6zM10 15V9l5 3-5 3z"/>
+        </svg>
+        YouTube
+      </a>
+
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
