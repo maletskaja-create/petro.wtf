@@ -80,24 +80,67 @@
             background: #ffe8cc;
         }
 
+        /* Project row: text on left, button on right */
+        .project-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0ede8;
+        }
+
+        .project-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .project-row:first-child {
+            padding-top: 0;
+        }
+
+        .project-info {
+            flex: 1;
+        }
+
+        .project-info strong {
+            display: block;
+            font-size: 15px;
+            line-height: 1.4;
+        }
+
+        .project-row .button {
+            margin: 0;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        /* Socials — larger and more spaced */
         .socials a {
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
+            gap: 12px;
+            margin-bottom: 16px;
             color: #333333;
             text-decoration: none;
-            font-size: 14px;
+            font-size: 17px;
+            font-weight: 500;
+        }
+
+        .socials a:last-child {
+            margin-bottom: 0;
         }
 
         .socials a:hover {
             text-decoration: underline;
+            color: #d97706;
         }
 
         .icon {
-            width: 16px;
-            height: 16px;
+            width: 22px;
+            height: 22px;
             fill: currentColor;
+            flex-shrink: 0;
         }
 
         @media (max-width: 480px) {
@@ -107,6 +150,10 @@
 
             .card {
                 padding: 16px;
+            }
+
+            .project-info strong {
+                font-size: 14px;
             }
         }
     </style>
@@ -138,23 +185,29 @@
         <a class="button secondary" href="...">Курси разом з друзями</a>
     </div>
 	
-	<div class="card">
+    <div class="card">
         <h2>Де я ще натворив</h2>
 
-        <p><strong>Змінотворці – співзасновник</strong></p>
-        <a class="button secondary" href="https://zminotvortsi.org/" target="_blank">
-            Перейти
-        </a>
+        <div class="project-row">
+            <div class="project-info">
+                <strong>Змінотворці – співзасновник</strong>
+            </div>
+            <a class="button secondary" href="https://zminotvortsi.org/" target="_blank">Перейти</a>
+        </div>
 
-        <p><strong>Демократична школа Майбутні – в минулому співавтор</strong></p>
-        <a class="button secondary" href="https://www.maibutni.com.ua/" target="_blank">
-            Перейти
-        </a>
-		
-		 <p><strong>kmbs – викладач</strong></p>
-        <a class="button secondary" href="https://kmbs.ua/" target="_blank">
-            Перейти
-        </a>
+        <div class="project-row">
+            <div class="project-info">
+                <strong>Демократична школа Майбутні – в минулому співавтор</strong>
+            </div>
+            <a class="button secondary" href="https://www.maibutni.com.ua/" target="_blank">Перейти</a>
+        </div>
+
+        <div class="project-row">
+            <div class="project-info">
+                <strong>kmbs – викладач</strong>
+            </div>
+            <a class="button secondary" href="https://kmbs.ua/" target="_blank">Перейти</a>
+        </div>
     </div>
 
     <div class="card">
