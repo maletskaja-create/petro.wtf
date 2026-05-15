@@ -77,7 +77,7 @@
             height: 100%;
             object-fit: cover;
             border-radius: 50%;
-            display: none; /* shown when src is set */
+            display: none;
         }
 
         .photo-placeholder svg {
@@ -90,7 +90,6 @@
             flex: 1;
         }
 
-        /* "Site in progress" badge — wobbly/curved */
         .name-row {
             display: flex;
             align-items: center;
@@ -149,8 +148,18 @@
             background: #ffe8cc;
         }
 
-        /* Accordion button */
-        .accordion-btn {
+        /* ─── SPLIT COURSE ROW ─────────────────────────────────── */
+        .course-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+            margin-bottom: 0;
+        }
+
+        /* Left part: link that navigates */
+        .course-link {
+            flex: 1;
             display: inline-flex;
             align-items: center;
             gap: 6px;
@@ -160,32 +169,46 @@
             border-radius: 8px;
             font-size: 14px;
             font-weight: 500;
-            cursor: pointer;
-            border: none;
-            font-family: inherit;
-            margin-top: 8px;
-            margin-right: 8px;
-            transition: 0.2s;
+            text-decoration: none;
+            transition: background 0.2s, color 0.2s;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        .accordion-btn:hover {
+        .course-link:hover {
+            background: #ffe8cc;
+            color: #b45309;
+        }
+
+        /* Right part: chevron toggle button */
+        .course-toggle {
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff4e6;
+            color: #d97706;
+            padding: 8px 10px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.2s;
+        }
+
+        .course-toggle:hover {
             background: #ffe8cc;
         }
 
-        .accordion-btn .chevron {
-            width: 14px;
-            height: 14px;
-            transition: transform 0.2s;
-            fill: none;
-            stroke: currentColor;
-            stroke-width: 2.5;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            flex-shrink: 0;
+        .course-toggle .toggle-label {
+            font-size: 13px;
+            font-weight: 500;
         }
 
-        .accordion-btn.open .chevron {
-            transform: rotate(180deg);
+        /* Simple secondary link (no accordion) — keep original style */
+        a.button.secondary {
+            margin-top: 8px;
         }
 
         /* Sub-courses list */
@@ -312,6 +335,10 @@
                 width: 72px;
                 height: 72px;
             }
+
+            .course-link {
+                font-size: 13px;
+            }
         }
     </style>
 </head>
@@ -324,7 +351,6 @@
     <div class="card">
         <div class="profile-header">
             <div class="photo-placeholder" id="photoWrap">
-                <!-- Replace src below with real photo path to show it -->
                 <img id="profilePhoto" src="photo.jpg" alt="Петро Чорноморець" onload="this.style.display='block'; this.parentElement.querySelector('svg').style.display='none'">
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="12" cy="8" r="4"/>
@@ -356,47 +382,61 @@
     <div class="card">
         <h2>Записатись на курси</h2>
 
-        <!-- Біологія психіки -->
-        <button class="accordion-btn" onclick="toggleAccordion(this, 'bio-list')">
-            Біологія психіки
-            <svg class="chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-        </button>
+        <!-- Біологія психіки: link + accordion toggle -->
+        <div class="course-row">
+            <a class="course-link" href="https://forms.gle/jJgT8Wa7sm1TtvR56" target="_blank">
+                Біологія психіки
+            </a>
+            <button class="course-toggle" onclick="toggleAccordion(this, 'bio-list')" aria-label="Показати список курсів">
+                <span class="toggle-label">деталі</span>
+            </button>
+        </div>
         <ul class="sub-list" id="bio-list">
-            <li> Гра-симуляція Вигорання</li>
-            <li> Стрес, втома і піклування про себе</li>
-            <li> Мотивація: база</li>
-            <li> Лінь, потреби і суть життя</li>
-            <li> Емоції</li>
-            <li> Самооцінка</li>
+            <li>Гра-симуляція Вигорання</li>
+            <li>Стрес, втома і піклування про себе</li>
+            <li>Мотивація: база</li>
+            <li>Лінь, потреби і суть життя</li>
+            <li>Емоції</li>
+            <li>Самооцінка</li>
         </ul>
 
-        <a class="button secondary" href="#">Біологія для СЕО та власників</a>
+        <!-- Біологія для СЕО: просте посилання без акордеону -->
+        <a class="button secondary" href="https://forms.gle/Pj2RJT6NPvq4tRkM6" target="_blank">Біологія для СЕО та власників</a>
 
-        <!-- Курси разом з друзями -->
-        <button class="accordion-btn" onclick="toggleAccordion(this, 'friends-list')">
-            Курси разом з друзями
-            <svg class="chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-        </button>
+        <!-- Курси разом з друзями: link + accordion toggle -->
+        <div class="course-row">
+            <a class="course-link" href="https://forms.gle/gPnRDcSkmyKNRp328" target="_blank">
+                Курси разом з друзями
+            </a>
+            <button class="course-toggle" onclick="toggleAccordion(this, 'friends-list')" aria-label="Показати список курсів">
+                <span class="toggle-label">деталі</span>
+            </button>
+        </div>
         <ul class="sub-list" id="friends-list">
-            <li> Складні системи і Горобець (доктор Горобець)</li>
-            <li> Монстри і Горобець (доктор Горобець)</li>
-            <li> Біохардкор</li>
-            <li> Ігри з Тимуром</li>
-            <li> Нахабна україністика</li>
-            <li> Біологія для психологів</li>
-            <li> Англомовний курс</li>
+            <li>Складні системи і Горобець (доктор Горобець)</li>
+            <li>Монстри і Горобець (доктор Горобець)</li>
+            <li>Біохардкор</li>
+            <li>Ігри з Тимуром</li>
+            <li>Нахабна україністика</li>
+            <li>Біологія для психологів</li>
+            <li>Англомовний курс</li>
         </ul>
 
-        <!-- Навчання для військових -->
-        <button class="accordion-btn" onclick="toggleAccordion(this, 'military-text')">
-             Навчання для військових
-            <svg class="chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
-        </button>
+        <!-- Навчання для військових: link + accordion toggle -->
+        <div class="course-row">
+            <a class="course-link" href="https://t.me/m/r65ypZCANjUy" target="_blank">
+                Навчання для військових
+            </a>
+            <button class="course-toggle" onclick="toggleAccordion(this, 'military-text')" aria-label="Детальніше">
+                <span class="toggle-label">деталі</span>
+            </button>
+        </div>
         <div class="military-dropdown" id="military-text">
             Навчання на відкритих програмах безкоштовне, є ще окремі програми, котрі можна замовити.
         </div>
 
-        <a class="button secondary" href="#">Корпоративне навчання</a>
+        <!-- Корпоративне навчання: просте посилання -->
+        <a class="button secondary" href="https://t.me/m/B5tSv3t8MDIy" target="_blank">Корпоративне навчання</a>
     </div>
 
     <!-- Проєкти -->
@@ -465,9 +505,9 @@
                 YouTube
             </a>
 
-                        <a href="https://www.t.me/bimimini" target="_blank">
+            <a href="https://www.t.me/bimimini" target="_blank">
                 <svg class="icon" viewBox="0 0 24 24" style="fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round;">
-                                       <circle cx="9" cy="10" r="1.2" fill="currentColor" stroke="none"/>
+                    <circle cx="9" cy="10" r="1.2" fill="currentColor" stroke="none"/>
                     <path d="M13 9.5c.5-.5 1.5-.5 2 0"/>
                     <path d="M7 14c1 1.5 2.5 2 5 2s4-1 4-1"/>
                     <path d="M3 6c1-2 5-3 9-3s8 1 9 3"/>
