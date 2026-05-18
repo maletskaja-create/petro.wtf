@@ -56,7 +56,16 @@
         .profile-header {
             display: flex;
             align-items: flex-start;
-            gap: 16px;
+            gap: 14px; /* зменшено gap, щоб текст був ближче до фото */
+        }
+
+        /* Photo block: фото + плашка по центру під ним */
+        .photo-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-shrink: 0;
+            gap: 8px; /* відступ між фото і плашкою */
         }
 
         .photo-placeholder {
@@ -64,7 +73,7 @@
             height: 90px;
             border-radius: 50%;
             background: #f0ede8;
-            border: 2px dashed #d4cfc8;
+            /* прибрано пунктирну рамку */
             flex-shrink: 0;
             display: flex;
             align-items: center;
@@ -88,6 +97,7 @@
 
         .profile-text {
             flex: 1;
+            padding-top: 2px; /* легке вирівнювання по верху з фото */
         }
 
         .name-row {
@@ -98,6 +108,7 @@
             margin-bottom: 6px;
         }
 
+        /* Плашка "сайт у розробці" — тепер під фото, не поряд з ім'ям */
         .badge-wip {
             display: inline-block;
             background: #fde68a;
@@ -110,8 +121,6 @@
             letter-spacing: 0.02em;
             white-space: nowrap;
             box-shadow: 1px 1px 0 #f59e0b;
-            position: relative;
-            top: -1px;
         }
 
         /* Buttons */
@@ -157,7 +166,6 @@
             margin-bottom: 0;
         }
 
-        /* Left part: link that navigates */
         .course-link {
             flex: 1;
             display: inline-flex;
@@ -181,7 +189,6 @@
             color: #b45309;
         }
 
-        /* Right part: chevron toggle button */
         .course-toggle {
             flex-shrink: 0;
             display: inline-flex;
@@ -206,12 +213,10 @@
             font-weight: 500;
         }
 
-        /* Simple secondary link (no accordion) — keep original style */
         a.button.secondary {
             margin-top: 8px;
         }
 
-        /* Sub-courses list */
         .sub-list {
             display: none;
             background: #fffbf5;
@@ -238,7 +243,6 @@
             border-bottom: none;
         }
 
-        /* Military dropdown */
         .military-dropdown {
             display: none;
             background: #f0fdf4;
@@ -338,21 +342,8 @@
 
             .course-link {
                 font-size: 13px;
-            
+            }
         }
-		
-		
-		.photo-block {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.badge-wip {
-    margin-top: 8px;
-}
-
-
     </style>
 </head>
 
@@ -361,38 +352,35 @@
 <div class="container">
 
     <!-- Profile card -->
-<div class="card">
-    <div class="profile-header">
+    <div class="card">
+        <div class="profile-header">
 
-        <div class="photo-block">
-
-            <div class="photo-placeholder" id="photoWrap">
-                <img id="profilePhoto" src="photo.jpg" alt="Петро Чорноморець"
-                     onload="this.style.display='block'; this.parentElement.querySelector('svg').style.display='none'">
-
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="12" cy="8" r="4"/>
-                    <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
-                </svg>
+            <!-- Фото + плашка по центру під ним -->
+            <div class="photo-block">
+                <div class="photo-placeholder" id="photoWrap">
+                    <img id="profilePhoto" src="photo.jpg" alt="Петро Чорноморець"
+                         onload="this.style.display='block'; this.parentElement.querySelector('svg').style.display='none'">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="8" r="4"/>
+                        <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+                    </svg>
+                </div>
+                <span class="badge-wip">🚧 сайт у розробці</span>
             </div>
 
-            <span class="badge-wip">🚧 сайт у розробці</span>
-
-        </div>
-
-        <div class="profile-text">
-            <div class="name-row">
-                <h1 style="margin:0">Петро Чорноморець</h1>
+            <!-- Текст впритул до фото -->
+            <div class="profile-text">
+                <div class="name-row">
+                    <h1 style="margin:0">Петро Чорноморець</h1>
+                </div>
+                <p class="subtitle">
+                    Кандидат біологічних наук.<br>
+                    Ментальне здоров'я. Освіта. Системне мислення.
+                </p>
             </div>
 
-            <p class="subtitle">
-                Кандидат біологічних наук.<br>
-                Ментальне здоров'я. Освіта. Системне мислення.
-            </p>
         </div>
-
     </div>
-</div>
 
     <!-- Збір -->
     <div class="card">
@@ -406,7 +394,6 @@
     <div class="card">
         <h2>Навчальні програми</h2>
 
-        <!-- Біологія психіки: link + accordion toggle -->
         <div class="course-row">
             <a class="course-link" href="https://forms.gle/jJgT8Wa7sm1TtvR56" target="_blank">
                 Біологія психіки
@@ -424,10 +411,8 @@
             <li>Самооцінка</li>
         </ul>
 
-        <!-- Біологія для СЕО: просте посилання без акордеону -->
         <a class="button secondary" href="https://forms.gle/Pj2RJT6NPvq4tRkM6" target="_blank">Біологія для СЕО та власників</a>
 
-        <!-- Курси разом з друзями: link + accordion toggle -->
         <div class="course-row">
             <a class="course-link" href="https://forms.gle/gPnRDcSkmyKNRp328" target="_blank">
                 Курси разом з друзями
@@ -446,7 +431,6 @@
             <li>Англомовний курс</li>
         </ul>
 
-        <!-- Навчання для військових: link + accordion toggle -->
         <div class="course-row">
             <a class="course-link" href="https://t.me/m/r65ypZCANjUy" target="_blank">
                 Навчання для військових
@@ -459,7 +443,6 @@
             Навчання на відкритих програмах безкоштовне, є ще окремі програми, котрі можна замовити.
         </div>
 
-        <!-- Корпоративне навчання: просте посилання -->
         <a class="button secondary" href="https://t.me/m/B5tSv3t8MDIy" target="_blank">Корпоративне навчання</a>
     </div>
 
