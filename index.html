@@ -338,8 +338,21 @@
 
             .course-link {
                 font-size: 13px;
-            }
+            
         }
+		
+		
+		.photo-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.badge-wip {
+    margin-top: 8px;
+}
+
+
     </style>
 </head>
 
@@ -348,27 +361,38 @@
 <div class="container">
 
     <!-- Profile card -->
-    <div class="card">
-        <div class="profile-header">
+<div class="card">
+    <div class="profile-header">
+
+        <div class="photo-block">
+
             <div class="photo-placeholder" id="photoWrap">
-                <img id="profilePhoto" src="photo.jpg" alt="Петро Чорноморець" onload="this.style.display='block'; this.parentElement.querySelector('svg').style.display='none'">
+                <img id="profilePhoto" src="photo.jpg" alt="Петро Чорноморець"
+                     onload="this.style.display='block'; this.parentElement.querySelector('svg').style.display='none'">
+
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="12" cy="8" r="4"/>
                     <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
                 </svg>
             </div>
-            <div class="profile-text">
-                <div class="name-row">
-                    <h1 style="margin:0">Петро Чорноморець</h1>
-                    <span class="badge-wip">🚧 сайт в розробці</span>
-                </div>
-                <p class="subtitle">
-                    Кандидат біологічних наук.<br>
-                    Ментальне здоров'я. Освіта. Системне мислення.
-                </p>
-            </div>
+
+            <span class="badge-wip">🚧 сайт у розробці</span>
+
         </div>
+
+        <div class="profile-text">
+            <div class="name-row">
+                <h1 style="margin:0">Петро Чорноморець</h1>
+            </div>
+
+            <p class="subtitle">
+                Кандидат біологічних наук.<br>
+                Ментальне здоров'я. Освіта. Системне мислення.
+            </p>
+        </div>
+
     </div>
+</div>
 
     <!-- Збір -->
     <div class="card">
@@ -380,7 +404,7 @@
 
     <!-- Курси -->
     <div class="card">
-        <h2>Записатись на курси</h2>
+        <h2>Навчальні програми</h2>
 
         <!-- Біологія психіки: link + accordion toggle -->
         <div class="course-row">
