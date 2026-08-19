@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Петро Чорноморець</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --white:   #ffffff;
+            --paper:   #f9f9f8;
+            --rule:    #e8e8e6;
+            --muted:   #999993;
+            --ink:     #1a1a18;
+            --accent:  #1a1a18;
+            --gap:     clamp(32px, 6vw, 64px);
+        }
+
+        body {
+            font-family: 'DM Sans', system-ui, sans-serif;
+            background: var(--white);
+            color: var(--ink);
+            font-size: 15px;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── WIP Badge ── */
+        .name-row {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px 12px;
+        }
+
+        .wip-badge {
+            display: inline-flex;
+            align-items: center;
+            background: var(--ink);
+            color: var(--white);
+            font-family: 'DM Mono', monospace;
+            font-size: 10.5px;
+            letter-spacing: 0.06em;
+            padding: 5px 12px;
+            border-radius: 0;
+            transform: rotate(-4deg);
+            cursor: pointer;
+            user-select: none;
+            white-space: nowrap;
+            transition: background 0.2s, transform 0.15s;
+        }
+
+        .wip-badge:hover {
+            background: #2e2e2b;
+            transform: rotate(-4deg) scale(1.05);
+        }
+
+        .wip-badge-text {
+            transition: opacity 0.15s;
+        }
+
+        /* ── Layout ── */
+        .page {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: clamp(40px, 8vw, 80px) clamp(20px, 5vw, 40px);
+        }
+
+        section {
+            padding: var(--gap) 0;
+            border-top: 1px solid var(--rule);
+        }
+
+        section:first-child { border-top: none; }
+
+        /* ── Meta label ── */
+        .label {
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            color: var(--muted);
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        /* ── Hero ── */
+        .hero {
+            display: flex;
+            align-items: flex-start;
+            gap: 28px;
+            padding-bottom: var(--gap);
+        }
+
+        /* Photo placeholder — the one funny element */
+        .photo-wrap {
+            flex-shrink: 0;
+        }
+
+        .photo-circle {
+            width: 88px;
+            height: 88px;
+            border-radius: 50%;
+            border: 1.5px solid var(--rule);
+            background: var(--paper);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: border-color 0.2s;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .photo-circle:hover {
+            border-color: var(--ink);
+        }
+
+        .photo-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            display: none;
+            position: absolute;
+            transition: opacity 0.15s;
+        }
+
+        .photo-circle img.loaded {
+            display: block;
+        }
+
+        .photo-hint {
+            font-family: 'DM Mono', monospace;
+            font-size: 9px;
+            color: var(--muted);
+            margin-top: 5px;
+            text-align: center;
+            opacity: 0.5;
+        }
+
+        .hero-text h1 {
+            font-size: clamp(22px, 4vw, 28px);
+            font-weight: 500;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+
+        .hero-text .role {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        /* ── Збір ── */
+        .zbir-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--ink);
+            text-decoration: none;
+            padding: 11px 18px;
+            border: 1.5px solid var(--ink);
+            border-radius: 4px;
+            transition: background 0.15s, color 0.15s;
+        }
+
+        .zbir-link:hover {
+            background: var(--ink);
+            color: var(--white);
+        }
+
+        .zbir-link::after {
+            content: '→';
+            opacity: 0.5;
+        }
+
+        .zbir-note {
+            margin-top: 10px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        /* ── Courses ── */
+        .course-block {
+            margin-bottom: 4px;
+        }
+
+        .course-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .course-block:last-child .course-row {
+            border-bottom: none;
+        }
+
+        .course-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .course-toggle {
+            background: none;
+            border: none;
+            padding: 0;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--ink);
+            cursor: pointer;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            line-height: 1.4;
+            transition: opacity 0.15s;
+        }
+
+        .course-toggle:hover { opacity: 0.6; }
+
+        .course-toggle .ch {
+            font-size: 10px;
+            opacity: 0.35;
+            flex-shrink: 0;
+            transition: transform 0.2s;
+            display: inline-block;
+        }
+
+        .course-toggle.open .ch { transform: rotate(90deg); }
+
+        .course-plain {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--ink);
+            flex: 1;
+        }
+
+        .course-action {
+            flex-shrink: 0;
+            font-size: 12px;
+            font-family: 'DM Mono', monospace;
+            color: var(--muted);
+            text-decoration: none;
+            letter-spacing: 0.04em;
+            border-bottom: 1px solid var(--rule);
+            padding-bottom: 1px;
+            transition: color 0.15s, border-color 0.15s;
+            white-space: nowrap;
+        }
+
+        .course-action:hover {
+            color: var(--ink);
+            border-color: var(--ink);
+        }
+
+        /* Sub-panels */
+        .sub-panel {
+            display: none;
+            padding: 4px 0 12px 0;
+        }
+
+        .sub-panel.open { display: block; }
+
+        /* Bio list */
+        .sub-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+
+        .sub-list li {
+            font-size: 13px;
+            color: var(--muted);
+            padding: 5px 0 5px 16px;
+            border-left: 1.5px solid var(--rule);
+            transition: color 0.15s, border-color 0.15s;
+        }
+
+        .sub-list li:hover {
+            color: var(--ink);
+            border-color: var(--ink);
+        }
+
+        /* Friends nested */
+        .friend-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .friend-item { border-bottom: 1px solid var(--rule); }
+        .friend-item:last-child { border-bottom: none; }
+
+        .friend-btn {
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            font-family: inherit;
+            font-size: 13px;
+            color: var(--muted);
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            cursor: pointer;
+            transition: color 0.15s;
+        }
+
+        .friend-btn:hover { color: var(--ink); }
+        .friend-btn.open { color: var(--ink); }
+
+        .friend-btn .fch {
+            font-size: 10px;
+            opacity: 0.4;
+            flex-shrink: 0;
+            transition: transform 0.2s;
+            display: inline-block;
+        }
+
+        .friend-btn.open .fch { transform: rotate(90deg); }
+
+        .friend-desc {
+            display: none;
+            font-size: 12.5px;
+            color: var(--muted);
+            line-height: 1.65;
+            padding: 2px 0 10px 0;
+        }
+
+        /* Описи курсів у блоці "Біологія психіки" — темніші, читабельніші */
+        #bio-panel .friend-desc {
+            color: var(--ink);
+        }
+
+        .friend-desc.open { display: block; }
+
+        .friend-desc p { margin-bottom: 8px; }
+        .friend-desc p:last-child { margin-bottom: 0; }
+
+        .friend-course-title {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 12.5px;
+            font-weight: 500;
+            color: var(--ink);
+            margin-top: 12px;
+            margin-bottom: 4px !important;
+        }
+
+        .friend-desc p:first-child.friend-course-title { margin-top: 0; }
+
+        /* ── Instructor grid (двоколонкові картки ведучих) ── */
+        .instructor-grid {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .instructor-card {
+            display: grid;
+            grid-template-columns: 130px 1fr;
+            gap: 8px 24px;
+            padding: 24px 0;
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .instructor-card:first-child { padding-top: 8px; }
+        .instructor-card:last-child { border-bottom: none; }
+
+        .instructor-name {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--ink);
+            line-height: 1.3;
+            margin-bottom: 6px;
+        }
+
+        .instructor-role {
+            font-size: 12px;
+            color: var(--muted);
+            line-height: 1.55;
+        }
+
+        .instructor-courses {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .instructor-course {
+            padding-bottom: 18px;
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .instructor-course:last-child {
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .instructor-course-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--ink);
+            margin-bottom: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .instructor-course-desc {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.6;
+            margin-bottom: 14px;
+        }
+
+        .instructor-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12.5px;
+            font-weight: 500;
+            color: var(--ink);
+            text-decoration: none;
+            padding: 8px 14px;
+            border: 1.5px solid var(--ink);
+            border-radius: 4px;
+            transition: background 0.15s, color 0.15s;
+        }
+
+        .instructor-cta:hover {
+            background: var(--ink);
+            color: var(--white);
+        }
+
+        .instructor-cta::after {
+            content: '→';
+            opacity: 0.5;
+        }
+
+        .misc-friends {
+            margin-top: 8px;
+        }
+
+        /* ── "автор книжок" — клікабельне слово, що відкриває попап ── */
+        .book-modal-trigger {
+            background: none;
+            border: none;
+            padding: 0;
+            font: inherit;
+            font-size: inherit;
+            color: var(--ink);
+            text-decoration: underline;
+            text-decoration-color: var(--rule);
+            text-underline-offset: 2px;
+            cursor: pointer;
+            transition: text-decoration-color 0.15s;
+        }
+
+        .book-modal-trigger:hover {
+            text-decoration-color: var(--ink);
+        }
+
+        .book-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(26, 26, 24, 0.55);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .book-modal-overlay.open {
+            display: flex;
+        }
+
+        .book-modal-box {
+            background: var(--white);
+            width: 100%;
+            max-width: 440px;
+            max-height: 82vh;
+            overflow-y: auto;
+            padding: 28px 24px 24px;
+            border-radius: 6px;
+            position: relative;
+        }
+
+        .book-modal-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: none;
+            border: none;
+            font-size: 18px;
+            line-height: 1;
+            color: var(--muted);
+            cursor: pointer;
+            padding: 6px;
+            transition: color 0.15s;
+        }
+
+        .book-modal-close:hover {
+            color: var(--ink);
+        }
+
+        .book-modal-name {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--ink);
+            margin-bottom: 4px;
+            padding-right: 24px;
+        }
+
+        .book-modal-subhead {
+            font-size: 12.5px;
+            color: var(--muted);
+            margin-bottom: 16px;
+        }
+
+        .instructor-books {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin: 0 0 16px;
+        }
+
+        .instructor-books li:last-child {
+            margin-bottom: 0;
+        }
+
+        .book-title {
+            display: block;
+            color: var(--ink);
+            font-weight: 500;
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 4px;
+        }
+
+        .book-links {
+            display: flex;
+            gap: 12px;
+        }
+
+        .book-links a, .book-note {
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.02em;
+        }
+
+        .book-links a {
+            color: var(--muted);
+            text-decoration: none;
+            border-bottom: 1px solid var(--rule);
+            padding-bottom: 1px;
+            transition: color 0.15s, border-color 0.15s;
+        }
+
+        .book-links a:hover {
+            color: var(--ink);
+            border-color: var(--ink);
+        }
+
+        .book-note {
+            color: var(--muted);
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        .instructor-socials {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 18px;
+            padding-top: 14px;
+            border-top: 1px solid var(--rule);
+        }
+
+        .instructor-socials a {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-family: 'DM Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 0.02em;
+            color: var(--ink);
+            text-decoration: none;
+            border-bottom: 1px solid var(--rule);
+            padding-bottom: 1px;
+            transition: color 0.15s, border-color 0.15s;
+        }
+
+        .instructor-socials a:hover {
+            color: var(--muted);
+            border-color: var(--ink);
+        }
+
+        .instructor-socials a::after {
+            content: '↗';
+            font-size: 10px;
+            opacity: 0.5;
+        }
+
+        .instructor-role p {
+            margin-bottom: 8px;
+        }
+
+        .instructor-role p:last-child {
+            margin-bottom: 0;
+        }
+
+        .course-coauthors {
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            font-weight: 400;
+            margin-top: 2px;
+        }
+
+        @media (max-width: 480px) {
+            .instructor-card {
+                grid-template-columns: 1fr;
+                gap: 4px;
+                padding: 20px 0;
+            }
+            .instructor-role { margin-bottom: 4px; }
+        }
+
+        /* Military */
+        .military-panel {
+            display: none;
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.65;
+            padding: 4px 0 12px 16px;
+            border-left: 1.5px solid var(--rule);
+        }
+
+        .military-panel.open { display: block; }
+
+        /* ── Наговорив ── */
+        .talks-block { margin-bottom: 8px; }
+        .talks-block:last-child { margin-bottom: 0; }
+
+        .talks-subhead {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--ink);
+            margin-bottom: 4px;
+        }
+
+        .talks-count {
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            font-weight: 400;
+            color: var(--muted);
+            letter-spacing: 0;
+        }
+
+        .talks-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+
+        .talks-link {
+            font-size: 13px;
+            color: var(--ink);
+            text-decoration: none;
+            padding: 5px 0 5px 14px;
+            display: block;
+            border-left: 1.5px solid var(--rule);
+            transition: color 0.15s, border-color 0.15s;
+        }
+
+        .talks-link:hover {
+            color: var(--muted);
+            border-color: var(--ink);
+        }
+
+        .talks-link--inline {
+            display: inline-block;
+            padding: 0;
+            border-left: none;
+            font-family: 'DM Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 0.02em;
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .talks-link--inline:hover {
+            border-color: var(--ink);
+        }
+
+        /* ── Projects ── */
+        .project-row {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .project-row:last-child { border-bottom: none; }
+        .project-row:first-child { padding-top: 0; }
+
+        .project-name {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .project-role {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        .project-link {
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            color: var(--muted);
+            text-decoration: none;
+            letter-spacing: 0.04em;
+            flex-shrink: 0;
+            border-bottom: 1px solid var(--rule);
+            padding-bottom: 1px;
+            transition: color 0.15s, border-color 0.15s;
+        }
+
+        .project-link:hover {
+            color: var(--ink);
+            border-color: var(--ink);
+        }
+
+        /* ── Socials ── */
+        .social-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--rule);
+            text-decoration: none;
+            color: var(--ink);
+            font-size: 14px;
+            font-weight: 500;
+            transition: opacity 0.15s;
+        }
+
+        .social-link:last-child { border-bottom: none; }
+        .social-link:hover { opacity: 0.5; }
+
+        .social-icon {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+            flex-shrink: 0;
+            opacity: 0.7;
+        }
+
+        /* ── Footer note ── */
+        .footer-note {
+            padding-top: var(--gap);
+            border-top: 1px solid var(--rule);
+            font-family: 'DM Mono', monospace;
+            font-size: 11px;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .status-dot {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: #f59e0b;
+            border-radius: 50%;
+            margin-right: 6px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        @media (max-width: 480px) {
+            .hero { gap: 18px; }
+            .photo-circle { width: 72px; height: 72px; }
+            .hero-text h1 { font-size: 20px; }
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+
+    <!-- ── Hero ── -->
+    <section class="hero">
+        <div class="photo-wrap">
+            <div class="photo-circle" id="photoCircle" onclick="cyclePhoto()" title="натисніть — ще фото">
+                <img src="photo1.jpg" alt="Петро Чорноморець" id="realPhoto" class="loaded">
+            </div>
+            <div class="photo-hint">↑ ще фото</div>
+        </div>
+        <div class="hero-text">
+            <div class="name-row">
+                <h1>Петро Чорноморець</h1>
+                <span class="wip-badge" onclick="cycleBanner()" title="натисніть">
+                    <span class="wip-badge-text" id="bannerText">сайт у розробці</span>
+                </span>
+            </div>
+            <div class="role">
+                Кандидат біологічних наук<br>
+                Ментальне здоров'я · Освіта · Системне мислення
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Збір ── -->
+    <section>
+        <span class="label">Актуальний збір</span>
+        <a class="zbir-link" href="https://send.monobank.ua/jar/52tDzeCLKA" target="_blank">
+            На кран-маніпулятор
+        </a>
+    </section>
+
+    <!-- ── Курси ── -->
+    <section>
+        <span class="label">Навчальні програми</span>
+
+        <!-- Біологія психіки -->
+        <div class="course-block">
+            <div class="course-row">
+                <div class="course-left">
+                    <button class="course-toggle" onclick="toggle(this,'bio-panel')" type="button">
+                        <span class="ch">▶</span> Біологія психіки
+                    </button>
+                </div>
+                <a class="course-action" href="https://forms.gle/jJgT8Wa7sm1TtvR56" target="_blank">записатись</a>
+            </div>
+            <div class="sub-panel" id="bio-panel">
+                <div class="friend-list">
+
+                    <div class="friend-item">
+                        <button class="friend-btn" onclick="toggleFriend(this)" type="button">
+                            Гра-симуляція Вигорання
+                            <span class="fch">▶</span>
+                        </button>
+                        <div class="friend-desc"><p>Кожен учасник отримає роль та набір задач, які потрібно виконувати у цій ролі. Наприклад: Астроцит створює силушки, які Свідомість буде використовувати на роботу, час із дітьми або бажання.</p>
+
+<p>Загалом таких ролей буде 26.</p>
+
+<p>Коли всі елементи системи починають працювати разом, відбувається магія.</p>
+
+<p>Система у динаміці - це зовсім не те саме, що статична схема на рисунку. А динаміка, у якій ти особисто щось робиш, чіпляє набагато сильніше, ніж коли дивишся відео, навіть дуже якісне.</p>
+
+<p>Раптом так виходить, що чіткі дії кожного перетворюються у великий хаос і треш. А потім із цього хаосу дивовижним чином народжується новий порядок, зовсім не очевидний з точки зору кожного індивідуального учасника. Так можна отримати якісно інше розуміння того, як працює вся система, і нові відповіді на власні, цілком практичні, запитання.</p>
+
+<p>Деякі висновки дуже неочікувані та контрінтуїтивні, є ризик сильно змінити свій погляд на життя.</p>
+
+<p>Найкраще виходить гра на 2 або 3 команди, тому що так кожен може і зіграти, і подивитися на всю систему зі сторони. Тому група буде 50-80 людей.</p>
+
+<p>Вік учасників 16+</p>
+
+<p>Гра триває 7 годин + перерва (будь ласка, розраховуйте, що може затягнутися).<br>
+Вартість 4900 грн.</p>
+
+<p>Найближчі Вигорання:</p>
+
+<p>• Онлайн, 05.09, 13:00 - 21:00<br>
+• Офлайн, Київ, 13.09, 11:00 - 19:00<br>
+• Офлайн, Львів, 02.10, 10:00 - 18:00<br>
+• Офлайн, Дніпро, 16.10, 09:00 - 17:00</p></div>
+                    </div>
+
+                    <div class="friend-item">
+                        <button class="friend-btn" onclick="toggleFriend(this)" type="button">
+                            Стрес, втома і піклування про себе
+                            <span class="fch">▶</span>
+                        </button>
+                        <div class="friend-desc"><p>Беремо сигнальні молекули (гормони та нейромедіатори): кортизол, дофамін, серотонін, ГАМК і жменю інших – і максимально людською мовою, як у моїх рілзах, розбираємо, як воно працює і як із цим жити. Стресостійкість, радість, тілесність, близькість, спокій, сміх і все таке.</p>
+
+<p>Офлайн на одному із занять також зіграємо в Симулятор щастя. Онлайн поки що цю гру не роблю.</p>
+
+<p>Курс на <strong>3 заняття</strong>.</p>
+
+<p>• Велика група офлайн, старт 03.10, 11:00 - 15:00, раз на тиждень, 2800 грн/заняття<br>
+• Велика група онлайн, старт 03.10, 18:00 - 21:00, раз на тиждень, 2100 грн/заняття<br>
+• Мала група, онлайн, старт 06.10, 18:00 - 21:00, раз на тиждень, 4200 грн/заняття</p></div>
+                    </div>
+
+                    <div class="friend-item">
+                        <button class="friend-btn" onclick="toggleFriend(this)" type="button">
+                            Мотивація: база
+                            <span class="fch">▶</span>
+                        </button>
+                        <div class="friend-desc"><p>Як працює наша мотивація, що і чому ми робимо або не робимо?<br>
+Чому ми набираємо задачі, які не здатні виконати?<br>
+Чому стандартні методи мотивації не тільки не допомагають, а руйнують робочу атмосферу?<br>
+Чому сильна мотивація - це шлях до поганих рішень і вигорання?<br>
+Як мотивація впливає на креативність?</p>
+
+<p>Зазвичай робота з мотивацією відбувається на рівні простих моделей типу "позитивна vs негативна" або "зовнішня vs внутрішня", а лінь розглядають як недостатність мотивації, коли треба просто додати інтенсивності.</p>
+
+<p>Насправді ж система набагато складніша та цікавіша. Навіть на рівні біохімічних процесів ми вже отримаємо щонайменше 7 вимірів системи та можемо сформувати оптимальний профіль мотивації.</p>
+
+<p>Курс на <strong>3 заняття.</strong></p>
+
+<p>• Велика група офлайн, старт 31.10, 11:00 - 15:00, раз на тиждень, 2800 грн/заняття<br>
+• Велика група онлайн, старт 31.10, 18:00 - 21:00, раз на тиждень, 2100 грн/заняття<br>
+• Мала група, онлайн, старт 03.11, 18:00 - 21:00, раз на тиждень, 4200 грн/заняття</p></div>
+                    </div>
+
+                    <div class="friend-item">
+                        <button class="friend-btn" onclick="toggleFriend(this)" type="button">
+                            Лінь, потреби та суть життя
+                            <span class="fch">▶</span>
+                        </button>
+                        <div class="friend-desc"><p>У ліні завжди є причина.</p>
+
+<p>Якщо ми працюємо з проблемою без розуміння причин, це:</p>
+
+<ul>
+  <li>неефективно</li>
+  <li>спочатку виглядає ефективно, але ненадовго</li>
+  <li>здається ефективним, але підриваємо стратегічну стабільність усієї системи.</li>
+</ul>
+
+<p>Наприклад: переважна більшість українців не займаються жодним навчанням після випуску зі школи та університету або погоджуються на це тільки з примусу. Чому? Тому що з навчанням у більшості погані асоціації: це нудно, постійне насильство, а результат або відсутній, або не вартий такої ціни.</p>
+
+<p>Або: більшість українців не дотримуються здорового способу життя. Серед важливих причин: для нас  шкідливе асоціюється зі свободою і насолодою, а корисне – то вимоги, необхідність, треба терпіти.</p>
+
+<p>Розберемося, як це працює в людини:</p>
+
+<ul>
+  <li>як ми розуміємо, чого хочемо</li>
+  <li>на що спираються раціональні рішення</li>
+  <li>звідки беруться залежності та травми</li>
+  <li>чи є сенс апелювати до моралі</li>
+  <li>як формується відповідальність</li>
+  <li>чи є в нас інстинкти і свобода волі.</li>
+</ul></p>
+<p>Курс на <strong>3 заняття.</strong></p>
+
+<p>• Велика група офлайн, старт 05.12, 11:00-15:00, раз на тиждень - 2800 грн/заняття<br>
+• Велика група онлайн, старт 05.12, 18:00-21:00, раз на тиждень - 2100 грн/заняття<br>
+• Мала група онлайн, старт 08.12, 18:00-21:00, раз на тиждень - 4200 грн/заняття</p></div>
+                    </div>
+
+                    <div class="friend-item">
+                        <button class="friend-btn" onclick="toggleFriend(this)" type="button">
+                            Емоції
+                            <span class="fch">▶</span>
+                        </button>
+                        <div class="friend-desc"><p>На що ми реагуємо емоцією: фактичні події, фантазії про майбутнє чи спогади з минулого?</p>
+
+<p>Чи може емоція виникати без причини?</p>
+
+<p>Що робити, коли вона вже є: контролювати чи відпускати?</p>
+
+<p>Емоції залучають багато систем у мозку, а тому немає одного простого алгоритму роботи з ними. Треба врахувати потреби, контекст, переконання, попередній досвід, а також емоцію як окремий нейропсихічний процес.</p>
+
+<p>Курс на <strong>2 заняття</strong>.</p>
+
+<p>• Велика група офлайн, старт 21.11, 11:00 - 15:00, раз на тиждень, 2800 грн/заняття<br>
+• Велика група онлайн, старт 21.11, 18:00 - 21:00, раз на тиждень, 2100 грн/заняття<br>
+• Мала група, онлайн, старт 24.11, 18:00 - 21:00, раз на тиждень, 4200 грн/заняття</p></div>
+                    </div>
+
+                    <div class="friend-item">
+                        <button class="friend-btn" onclick="toggleFriend(this)" type="button">
+                            Самооцінка
+                            <span class="fch">▶</span>
+                        </button>
+                        <div class="friend-desc">
+<p>Курс, який відкриває душу. Але не психотерапія. Теж максимум раціональності, системного мислення та біології, де це можливо. Від самооцінки залежить дуже багато, і вона ніяк не лягає у класичну розтяжку "висока-низька", там усе сильно хитріше.</p>
+
+<p>Офлайн буде набір практичних вправ. Деякі з них онлайн теж доступні.</p>
+
+<p>Курс на <strong>2 заняття</strong>.</p>
+
+<p>• Велика група офлайн, старт 19.09, 11:00 - 15:00, раз на тиждень, 2800 грн/заняття<br>
+• Велика група онлайн, старт 19.09, 18:00 - 21:00, раз на тиждень, 2100 грн/заняття<br>
+• Мала група, онлайн, старт 22.09, 18:00 - 21:00, раз на тиждень, 4200 грн/заняття</p></div>
+                    </div>
+                    <div class="friend-item">
+					<button class="friend-btn" onclick="toggleFriend(this)" type="button">
+                            Втома і сон
+                            <span class="fch">▶</span>
+                        </button>
+						<div class="friend-desc"><p>Буває так, що ми відчуваємо втому, але чашка кави або трохи мотивації — і відкривається друге або третє дихання. А буває, що відчуття втоми немає, але робота не робиться: неможливо зосередитися, купа помилок і можливо навіть хвороби. При цьому, коли треба спати, мозок аж гуде від думок і задач, а зранку від цієї енергії не лишається й сліду.</p>
+
+<p>Оце от усе складемо докупи.</p>
+
+<p>Курс на<strong> 2 заняття.</strong></p>
+
+<p>• Велика група офлайн, старт 16.01, 11:00-15:00, раз на тиждень - 2800 грн/заняття<br>
+• Велика група онлайн, старт 16.01, 18:00-21:00, раз на тиждень - 2100 грн/заняття<br>
+• Мала група онлайн, старт 19.01, 18:00-21:00, раз на тиждень - 4200 грн/заняття</p></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Біологія для СЕО -->
+        <div class="course-block">
+            <div class="course-row">
+                <div class="course-left">
+                    <button class="course-toggle" onclick="toggle(this,'ceo-panel')" type="button">
+                        <span class="ch">▶</span> Біологія для СЕО та власників
+                    </button>
+                </div>
+                <a class="course-action" href="https://forms.gle/Pj2RJT6NPvq4tRkM6" target="_blank">записатись</a>
+            </div>
+            <div class="sub-panel" id="ceo-panel">
+                <div style="font-size: 12.5px; color: var(--ink); line-height: 1.65; padding: 2px 0 10px 0;"><p>На цьому курсі може статися все з будь-яких моїх курсів і все від мого колеги з kmbs і Змінотворців Тимура Демчука:</p>
+
+<ul>
+  <li>Мотивація.</li>
+  <li>Стресостійкість.</li>
+  <li>Еволюція і суспільство.</li>
+  <li>Політика і держава.</li>
+  <li>Переговори.</li>
+  <li>Емоції.</li>
+  <li>Самооцінка.</li>
+  <li>Та будь-які інші з наших тем, ігрових форматів і кейсів.</li>
+</ul>
+
+<p>Все це – у форматі клубу. Для входу один стартовий дводенний модуль з необхідною понятійною базою з біології та системного мислення. А далі – 2-4 рази на рік виїзди по 3-4 дні з глибоким зануренням у теми, цікаві для учасників.</p>
+
+<p>Головна цінність – спільнота: керівники (від СЕО -2 і вище) мають особливий погляд на світ і запити у навчанні.</p>
+
+<p>Дводенний стартовий модуль,16800 грн:</p>
+
+<ul>
+  <li>5-6 жовтня, 16800 грн</li>
+  <li>23-24 листопада, 16800 грн</li>
+  <li>1-2 лютого, 16800 грн</li>
+  <li>5-6 квітня, 16800 грн</li>
+  <li>24-25 травня, 16800 грн</li>
+</ul></div>
+            </div>
+        </div>
+
+        <!-- Курси з друзями -->
+        <div class="course-block">
+            <div class="course-row">
+                <div class="course-left">
+                    <button class="course-toggle" onclick="toggle(this,'friends-panel')" type="button">
+                        <span class="ch">▶</span> Курси разом з друзями
+                    </button>
+                </div>
+                <a class="course-action" href="https://forms.gle/gPnRDcSkmyKNRp328" target="_blank">записатись</a>
+            </div>
+            <div class="sub-panel" id="friends-panel">
+                <div class="instructor-grid">
+
+                    <!--
+                    <div class="instructor-card">
+                        <div>
+                            <div class="instructor-name">Наталя Науменко</div>
+                            <div class="instructor-role">Тут буде короткий опис, хто така Наталя Науменко</div>
+                        </div>
+                        <div class="instructor-courses">
+                            <div class="instructor-course">
+                                <div class="instructor-course-title">Біологія харчової поведінки</div>
+                                <div class="instructor-course-desc">Опис курсу з'явиться тут.</div>
+                            </div>
+                        </div>
+                    </div>
+                    -->
+
+                    <div class="instructor-card">
+                        <div>
+                            <div class="instructor-name">Леонід Горобець</div>
+                            <div class="instructor-role">Доктор Біологічних наук, <button class="book-modal-trigger" onclick="openBookModal()" type="button">автор книжок</button>.</div>
+                        </div>
+                        <div class="instructor-courses">
+                            <div class="instructor-course">
+                                <div class="instructor-course-title">Складні системи і Горобець</div>
+                                <div class="instructor-course-desc">За 5 занять ви складете в одне ціле: Римську імперію, емансипацію жінок, палеозой, чуму, сицилійську мафію, бананові республіки, Нобелівську премію, екскременти стародавніх креветок, вчення Христа і Магомета, закарпатську та італійську кухню та низку інших факторів, які критично пов'язані з появою майонезу в нашому світі.</div>
+                            </div>
+                            <div class="instructor-course">
+                                <div class="instructor-course-title">Монстри і Горобець (доктор Горобець)</div>
+                                <div class="instructor-course-desc"><p><u>Заняття 1. База: “Чому не існує?”.</u></p>
+
+<p>Монстри чудові тим, що більшість з них можна досліджувати на відстані, якщо замінимо твердження “Їх не існує!” запитанням “Чому не існує?”. Для початку спробуємо на морських дівах (більш відомих під помилковою назвою “русалки”) та кентаврах.</p>
+
+<p><u>Заняття 2. Кровопивці.</u></p>
+
+<p>Важлива історія вампірів. Не важлива, але показова історія чупакабри.</p>
+
+<p><u>Заняття 3. Чому дракони не динозаври?</u></p>
+
+<p>Раціональність на службі псевдонауки. Кого убивав святий Юрій? Вовкулаки, циклопи, кентаври та інші істоти.</p>
+
+<p><u>Заняття 4. Чому не існує драконів?</u></p>
+
+<p>Чи можливі вогнедихаючі істоти? Чи можливі літаючі монстри? Оптимальне число голів. Чи можливі великі монстри?</p>
+
+<p><u>Заняття 5. Вимерлі і воскреслі.</u></p>
+
+<p>Чи збереглись доісторичні релікти? Яка на смак мамутятина? Чи можливо воскресити вимерлий вид?</p>
+
+<p><u>Заняття 6. Тварини в міфах сучасних аборигенів Європи.</u></p>
+
+<p>Що таке міф? Чому міфи будуть завжди? Чому біологічні міфи популярні? Особливості сучасних міфів (чому в дечому середньовічні бестіарії краще).</p>
+
+<p>Наші уявлення про тварин (вони більше міфічні ніж наукові). Персонажі Вінні-Пуха як основа систематики міфічних тварин.</p>
+
+<p>“Палеонтологія” як окреме джерело міфічних тварин.</p>
+
+<p>Курс на 6 занять щотижня.</p></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="instructor-card">
+                        <div>
+                            <div class="instructor-name">Тимур Демчук</div>
+                            <div class="instructor-role">Політолог, експерт із переговорів, спів-методолог у Змінотворцях</div>
+                        </div>
+                        <div class="instructor-courses">
+                            <div class="instructor-course">
+                                <div class="instructor-course-title">Ігри з Тимуром</div>
+                                <div class="instructor-course-desc">Тимур майстер ігор і кейсових занять: Гетьманщина, Дві держави, ОТГ, Гренландія, Переговори з терористом та низка інших.<br>
+До речі, у Гетьманщину грали деякі з найвищих генералів ГШ.
+</div>
+                            </div>
+                            <div class="instructor-course">
+                                <div class="instructor-course-title">Нахабна україністика</div>
+                                <div class="instructor-course-desc">Тимур із кількома колегами має суперовий курс про справжніх творців нації – українських бізнесменів і меценатів, політиків тощо. Для вас це буде абсолютно новий погляд на Україну: прогресивну, небайдужу і творчу.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="instructor-card">
+                        <div>
+                            <div class="instructor-name">Петро Чорноморець</div>
+                            <div class="instructor-role">Кандидат біологічних наук</div>
+                        </div>
+                        <div class="instructor-courses">
+                            <div class="instructor-course">
+                                <div class="instructor-course-title">
+                                    Біохардкор
+                                    
+                                </div>
+                                <div class="instructor-course-desc"><p>Хто хотів глибше у клітину, молекулярну біологію та генетику, еволюцію, імунітет і все що завгодно інше. Де зможемо, на простому рівні зачепимо і хімію з фізикою.</p>
+
+<p>Уже запросив у співведучі:</p>
+
+<ul>
+  <li>Олену Соляник, яка займається на практиці фармацевтичними біотехнологіями та паралельно тренує олімпіадників міжнародного рівня.</li>
+  <li>Олексія Болдирєва, кандидата біологічних наук, який займається молекулярною нейрофізіологією та популяризацією науки.</li>
+</ul>
+
+<p>Ну і я, Петро Чорноморець, кандидат біологічних наук.</p></div>
+                            </div>
+                            <div class="instructor-course">
+                                <div class="instructor-course-title">Біологія для психологів</div>
+                                <div class="instructor-course-desc">Останній рік я окремий курс для психологів не робив. Але літає в полі думка, що контент великого курсу і частина біохардкору можуть краще зайти спеціалістам у окремій спільноті у вигляді звичних триденок.</div>
+                            </div>
+                            <div class="instructor-course">
+                                <div class="instructor-course-title">Англомовний курс</div>
+                                <div class="instructor-course-desc">Біологія психіки, але англійською – якщо ви хочете практикувати обговорення складних думок. Імовірно, в колабі з Олею Лавриченко, психологинею і викладачкою англійської.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Навчання для військових -->
+        <div class="course-block">
+            <div class="course-row">
+                <div class="course-left">
+                    <button class="course-toggle" onclick="toggle(this,'military-panel')" type="button">
+                        <span class="ch">▶</span> Навчання для військових
+                    </button>
+                </div>
+                <a class="course-action" href="https://t.me/m/r65ypZCANjUy" target="_blank">зв'язатись</a>
+            </div>
+            <div class="sub-panel" id="military-panel">
+                <div class="military-panel open" style="display:block; position:static;">
+                    Військові можуть безкоштовно навчатися у великих групах Біології психіки та на всіх курсах із друзями. Також є спеціальний курс під парасолькою Командування об'єднаних сил — щоби потрапити туди, напишіть.
+                </div>
+            </div>
+        </div>
+
+        <!-- Корпоративне навчання -->
+        <div class="course-block">
+            <div class="course-row">
+                <div class="course-left">
+                    <span class="course-plain">Корпоративне навчання</span>
+                </div>
+                <a class="course-action" href="https://t.me/m/B5tSv3t8MDIy" target="_blank">зв'язатись</a>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ── Наговорив ──
+    <section>
+        <span class="label">Наговорив</span>
+
+        <div class="talks-block">
+            <div class="talks-subhead">Дивитись</div>
+
+            <div class="friend-list">
+                <div class="friend-item">
+                    <button class="friend-btn" onclick="toggleFriend(this)" type="button">
+                        2026 <span class="talks-count">— 12 відео</span>
+                        <span class="fch">▶</span>
+                    </button>
+                    <div class="friend-desc">
+                        <ul class="talks-list">
+                            <li><a class="talks-link" href="#" target="_blank">Тут буде посилання на відео-інтерв'ю ↗</a></li>
+                            <li><a class="talks-link" href="#" target="_blank">Тут буде посилання на відео-інтерв'ю ↗</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="friend-item">
+                    <button class="friend-btn" onclick="toggleFriend(this)" type="button">
+                        2025 <span class="talks-count">— 18 відео</span>
+                        <span class="fch">▶</span>
+                    </button>
+                    <div class="friend-desc">
+                        <ul class="talks-list">
+                            <li><a class="talks-link" href="#" target="_blank">Тут буде посилання на відео-інтерв'ю ↗</a></li>
+                            <li><a class="talks-link" href="#" target="_blank">Тут буде посилання на відео-інтерв'ю ↗</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="friend-item">
+                    <button class="friend-btn" onclick="toggleFriend(this)" type="button">
+                        2024 <span class="talks-count">— 9 відео</span>
+                        <span class="fch">▶</span>
+                    </button>
+                    <div class="friend-desc">
+                        <ul class="talks-list">
+                            <li><a class="talks-link" href="#" target="_blank">Тут буде посилання на відео-інтерв'ю ↗</a></li>
+                            <li><a class="talks-link" href="#" target="_blank">Тут буде посилання на відео-інтерв'ю ↗</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="talks-block">
+            <div class="talks-subhead">Читати</div>
+
+            <div class="friend-list">
+                <div class="friend-item">
+                    <button class="friend-btn" onclick="toggleFriend(this)" type="button">
+                        Тут буде назва інтерв'ю — джерело
+                        <span class="fch">▶</span>
+                    </button>
+                    <div class="friend-desc">
+                        <p>Тут буде короткий уривок інтерв'ю (кілька речень, а не повний текст).</p>
+                        <a class="talks-link talks-link--inline" href="#" target="_blank">читати повністю на джерелі ↗</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    -->
+
+    <!-- ── Проєкти ── -->
+    <section>
+        <span class="label">Де я ще натворив</span>
+
+        <div class="project-row">
+            <div>
+                <div class="project-name">Змінотворці</div>
+                <div class="project-role">співзасновник</div>
+            </div>
+            <a class="project-link" href="https://zminotvortsi.org/" target="_blank">перейти ↗</a>
+        </div>
+
+        <div class="project-row">
+            <div>
+                <div class="project-name">Демократична школа Майбутні</div>
+                <div class="project-role">колишній співавтор</div>
+            </div>
+            <a class="project-link" href="https://www.maibutni.com.ua/" target="_blank">перейти ↗</a>
+        </div>
+
+        <div class="project-row">
+            <div>
+                <div class="project-name">kmbs</div>
+                <div class="project-role">викладач</div>
+            </div>
+            <a class="project-link" href="https://kmbs.ua/" target="_blank">перейти ↗</a>
+        </div>
+    </section>
+
+    <!-- ── Соцмережі ── -->
+    <section>
+        <span class="label">Соцмережі</span>
+        <div class="social-grid">
+
+            <a class="social-link" href="https://t.me/petro_chornomorets" target="_blank">
+                <svg class="social-icon" viewBox="0 0 24 24"><path d="M9.9 16.2 9.7 20c.4 0 .6-.2.8-.4l2-1.9 4.1 3c.8.4 1.3.2 1.5-.7l2.7-12.7c.3-1.1-.4-1.6-1.2-1.3L2.2 10.1c-1 .4-1 1 0 1.3l4.4 1.4L17.4 6.6c.5-.3 1-.1.6.2"/></svg>
+                Telegram
+            </a>
+
+            <a class="social-link" href="https://www.facebook.com/petro.chornomorets" target="_blank">
+                <svg class="social-icon" viewBox="0 0 24 24"><path d="M13 3h4v4h-4v3h4v4h-4v7h-4v-7H7v-4h2V7a4 4 0 0 1 4-4"/></svg>
+                Facebook
+            </a>
+
+            <a class="social-link" href="https://www.instagram.com/pyyythooonnn/" target="_blank">
+                <svg class="social-icon" viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5m5 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10m6.5-.9a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4"/></svg>
+                Instagram
+            </a>
+
+            <a class="social-link" href="https://www.tiktok.com/@uchitelgoda" target="_blank">
+                <svg class="social-icon" viewBox="0 0 24 24"><path d="M14 3c.5 2.5 2.5 4.5 5 5v3c-1.6 0-3-.5-4-1.4V17a5 5 0 1 1-5-5c.4 0 .7 0 1 .1v3a2 2 0 1 0 2 2V3h1z"/></svg>
+                TikTok
+            </a>
+
+            <a class="social-link" href="https://www.youtube.com/@PetroChornomoretsOnline" target="_blank">
+                <svg class="social-icon" viewBox="0 0 24 24"><path d="M23 12s0-4-1-6c-.5-1-1.5-1.5-2.5-1.7C17.5 4 12 4 12 4s-5.5 0-7.5.3c-1 .2-2 .7-2.5 1.7C1 8 1 12 1 12s0 4 1 6c.5 1 1.5 1.5 2.5 1.7C6.5 20 12 20 12 20s5.5 0 7.5-.3c1-.2 2-.7 2.5-1.7 1-2 1-6 1-6zM10 15V9l5 3-5 3z"/></svg>
+                YouTube
+            </a>
+
+            <a class="social-link" href="https://www.t.me/bimimini" target="_blank">
+                <svg class="social-icon" viewBox="0 0 24 24" style="fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;">
+                    <circle cx="9" cy="10" r="1.2" fill="currentColor" stroke="none"/>
+                    <path d="M13 9.5c.5-.5 1.5-.5 2 0"/>
+                    <path d="M7 14c1 1.5 2.5 2 5 2s4-1 4-1"/>
+                    <path d="M3 6c1-2 5-3 9-3s8 1 9 3"/>
+                    <path d="M20 17v3a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3"/>
+                    <path d="M16 14h4l-1-4h-2l-1 4z"/>
+                </svg>
+                Біллі Мілліган на мінєралкє
+            </a>
+
+        </div>
+    </section>
+
+    <!-- ── Footer ── -->
+    <div class="footer-note">
+        <span>© Петро Чорноморець</span>
+    </div>
+
+</div>
+
+<!-- ── Попап "автор книжок" (Леонід Горобець) ── -->
+<div class="book-modal-overlay" id="gorobetsModal" onclick="closeBookModalOnOverlay(event)">
+    <div class="book-modal-box">
+        <button class="book-modal-close" onclick="closeBookModal()" type="button" aria-label="закрити">✕</button>
+        <div class="book-modal-name">Леонід Горобець</div>
+        <div class="book-modal-subhead">Доктор Біологічних наук, автор книжок</div>
+        <ul class="instructor-books">
+            <li>
+                <span class="book-title">«Слідуй за розбитим черепом: історія еволюції скелета»</span>
+                <span class="book-links">
+                    <a href="http://bit.ly/4oCxmo2" target="_blank" rel="noopener">паперова</a>
+                    <a href="http://bit.ly/3JkIndB" target="_blank" rel="noopener">електронна</a>
+                </span>
+            </li>
+            <li>
+                <span class="book-title">«Зоологічна екскурсія супермаркетом. Невідома історія відомих продуктів»</span>
+                <span class="book-links">
+                    <a href="http://bit.ly/4oD9dxB" target="_blank" rel="noopener">паперова</a>
+                    <a href="http://bit.ly/4fODZQo" target="_blank" rel="noopener">електронна</a>
+                </span>
+            </li>
+            <li>
+                <span class="book-title">«Чупакабра, дракони та вовкулаки. Чому вимерли істоти, які ніколи не жили»</span>
+                <span class="book-note">вийде у 2026 — хай цей курс вам трошки збудить апетит</span>
+            </li>
+        </ul>
+        <div class="instructor-socials">
+            <a href="http://bit.ly/3UAI7JU" target="_blank" rel="noopener">Instagram @paleornithologist</a>
+            <a href="https://t.me/stromata" target="_blank" rel="noopener">Telegram</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Photo easter egg — клік перемикає фото по колу
+    const photos = [
+        'photo1.jpg',
+        'photo2.jpg',
+        'photo3.jpg',
+        // додай сюди посилання на решту завантажених фото
+    ];
+    let photoIdx = 0;
+
+    function cyclePhoto() {
+        photoIdx = (photoIdx + 1) % photos.length;
+        const img = document.getElementById('realPhoto');
+        img.style.opacity = '0';
+        setTimeout(() => {
+            img.src = photos[photoIdx];
+            img.style.opacity = '1';
+        }, 120);
+    }
+
+    // WIP Banner
+    const bannerPhrases = [
+        'сайт у розробці',
+        'все ще у розробці',
+        'і досі у розробці',
+        'ну ви зрозуміли',
+        'дякуємо за терпіння',
+        'скоро. мабуть.',
+        'сайт у розробці',
+    ];
+    let bannerIdx = 0;
+
+    function cycleBanner() {
+        bannerIdx = (bannerIdx + 1) % bannerPhrases.length;
+        const el = document.getElementById('bannerText');
+        el.style.opacity = '0';
+        setTimeout(() => {
+            el.textContent = bannerPhrases[bannerIdx];
+            el.style.opacity = '1';
+        }, 120);
+    }
+
+    // Accordion
+    function toggle(btn, panelId) {
+        const panel = document.getElementById(panelId);
+        const isOpen = panel.classList.contains('open');
+        panel.classList.toggle('open', !isOpen);
+        btn.classList.toggle('open', !isOpen);
+    }
+
+    function toggleFriend(btn) {
+        const desc = btn.nextElementSibling;
+        const isOpen = desc.classList.contains('open');
+        desc.classList.toggle('open', !isOpen);
+        btn.classList.toggle('open', !isOpen);
+    }
+
+    // Попап "автор книжок"
+    function openBookModal() {
+        document.getElementById('gorobetsModal').classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeBookModal() {
+        document.getElementById('gorobetsModal').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    function closeBookModalOnOverlay(e) {
+        if (e.target.id === 'gorobetsModal') closeBookModal();
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeBookModal();
+    });
+</script>
+</body>
+</html>
